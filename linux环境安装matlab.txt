@@ -1,0 +1,104 @@
+***注意，如果安装出现问题要重装的话，需要手动删除已经装好的部分文件，如果自己没有更改路径的话，应该是在/usr/local中有一个MATLAB文件夹，这个是系统自动创建的，用rm -rf MATLAB这个命令删除即可。查看目前使用状态：nvidia-smi
+
+1.建立一个MATLAB2018文件夹，将linux版本的matlab使用xftp传送到linux环境中，放入MATLAB2018中
+
+2.进入MATLAB文件夹：cd MATLAB2018
+
+3.建立7z文件夹并进入，cd 7z。然后安装7zz解压工具，用于解压.iso文件（我们不是管理员，没有挂载权限）wget https://www.7-zip.org/a/7z2201-linux-x64.tar.xz
+
+4.解压：tar xvJf 7z2201-linux-x64.tar.xz
+
+5.退回到MATLAB文件夹：cd ..
+
+6.建立一个matlab文件夹
+
+7.使用7zz工具将R2018a_glnxa64_dvd1.iso解压到：./7z/7zz x ../MATLAB2018/R2018a_glnxa64_dvd1.iso -o../MATLAB2018/matlab
+
+8.将R2018a_glnxa64_dvd2.iso解压到：./7z/7zz x ../MATLAB2018/R2018a_glnxa64_dvd2.iso -o../MATLAB2018/matlab
+
+9.给以下文件夹
+./matlab/install
+./matlab/bin/glnxa64/install_unix
+./matlab/sys/java/jre/glnxa64/jre/bin/java
+赋予所有权限
+
+10.退到MATLAB2018文件夹中：cd ..
+
+11.安装：使用sudo ./matlab/install会报错，因此我们使用命令如下（最后的那串数字就是秘钥）：
+./matlab/install -mode silent -agreeToLicense yes -fileInstallationKey 09806-07443-53955-64350-21751-41297
+这里我们不指定文件夹，会自动安装到/usr/local/MATLAB中
+
+12.解压破解文件夹：tar -xvf Matlab2018aLinux64Crack.tar.gz 
+
+
+第13，14步可以直接拷贝licenses和install文件！！！！！！
+
+
+13.在/usr/local/MATLAB/R2018a中建立licenses文件夹，将解压得到的license_standalone.lic放入licenses文件夹。
+将matlab中的activate.ini文件也放入licenses文件夹
+保证目前是在/MATLAB2018的情况下，执行以下命令实现：
+mkdir /usr/local/MATLAB/R2018a/licenses
+cp license_standalone.lic /usr/local/MATLAB/R2018a/licenses/
+cp /matlab/activate.ini /usr/local/MATLAB/R2018a/licenses/
+
+14.编辑编辑activate.ini，用来配置激活选项（直接在xftp中右键选择用记事本编辑即可）：
+#开启silent模式
+isSilent=true
+#设置激活方式, 离线激活 无需联网
+activateCommand=activateOffline
+#license文件位置（来自于破解文件）
+licenseFile=/usr/local/Matlab/R2018a/install/license_standalone.lic
+！！！！！！！！！！！！注意不能直接复制粘贴到文件的最开始，要填到相应的位置，否则破解应该会报错
+
+15.将破解文件中提供的.so文件都拷贝到安装路径下。
+如果破解文件提供的不是这样的一个文件夹而是很多的.so文件的话，则把所有的.so文件拷贝到/usr/local/Matlab/R2018a/bin/glnxa64/覆盖。可以提前把安装目录下对应的.so文件备份一下
+在/usr/local/MATLAB/R2018a中执行下述命令：
+/usr/local/MATLAB/R2018a/bin/activate_matlab.sh -propertiesFile /usr/local/MATLAB/R2018a/licenses/activate.ini
+
+16.添加环境变量：
+export PATH=/usr/local/MATLAB/R2018a/bin:$PATH
+但方法的PATH 在终端关闭后就会消失。所以还是建议通过编辑/etc/profile来改PATH，也可以改家目录下的.bashrc(即：~/.bashrc)
+vim /etc/profile
+export PATH=/usr/local/MATLAB/R2018a/bin:$PATH（加在最后一行）
+保存退出（按esc然后:wq）
+然后运行source /etc/profile
+
+
+17.启动测试：
+matlab -nodesktop -nodisplay
+
+如果报错Fatal Internal Error: Unexpected exception: 'N9MathWorks6System15SimpleExceptionE: Dynamic exception type: St13runtime_error
+std::exception::what: Bundle#1 start failed: libXt.so.6: cannot open shared object file: No such file or directory
+' in createMVMAndCallParser phase 'Creating local MVM'
+那么使用命令：apt install x11-xserver-utils之后再尝试
+
+
+18.运行代码
+建立一个/data/Study_4_matlab/Data的文件夹，将所有的网络放入其中
+到代码.m的目录下运行matlab -nodesktop -nodisplay -r Study_4（注意不能加.m）
+
+
+19.如何同时开多个窗口？
+安装screen命令：apt-get install screen
+screen命令可以方便我们远程运行matlab程序. 使用screen命令可以创建多个窗口, 在每一个窗口中都可以进行操作, 像在一个单独的SSH连接窗口. 并且在使用screen后, 我们可以关掉电脑, 无需等待结果, 只需要使程序远程的在服务器上运行即可。
+screen -S name: 这个命令是创建一个名字为name的会话, 进入这个会话后可以像在之前的主窗口那样操作和运行程序
+使用快捷键 ctrl + a + d: 可以离开这个子会话, 回到主窗口
+screen -r name: 可以从主窗口回到名字为name的这个会话. (如果只创建了一个子会话, 只输入screen -r 就可以回到这个子会话)
+screen -ls: 可以查看当前所创建的子会话
+exit: 可以退出screen
+screen -S name -X quit: 这个命令可以删除这个子会话
+
+代码运行的指令：
+cd ./data/Study_4_matlab/
+matlab -nodesktop -nodisplay -r Study_4_220
+
+
+！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+出现过的错误：
+1.无法挂载（因为没有管理员权限所以只能解压iso）
+2.Error: Activation cannot proceed. You may either:
+
+    Set an X11 display, and restart the activation process
+    Use the silent activation feature
+    Activate using the license center
+这个错误是因为没有编辑activate.ini

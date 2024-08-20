@@ -1,0 +1,34 @@
+大模型：
+https://huggingface.co/IDEA-CCNL/Randeng-Pegasus-523M-Summary-Chinese
+
+服务器：
+Xshell：连接
+winSCP：数据传输
+查看显卡占用：nvidia-smi
+建立文件夹：mkdir XXX
+删除文件：rm
+删除文件夹（整个递归删除）：rm -rf XXX
+从路径A复制到路径B：cp A B
+
+python环境相关：
+没有base环境，先输入：source ~/anaconda3/bin/activate
+创建conda环境：conda create --name XXX python=3.6
+打开conda环境：conda activate XXX
+关闭conda环境：conda deactivate XXX
+查看虚拟环境列表：conda env list
+删除环境：conda remove -n XXX --all
+查询conda环境中已经安装的包：conda list（有一些包可能再base环境中有）
+安装/卸载相关包命令：
+pip install XXX==X.X.X（一定注意加版本号，因为可能有些包会update其他包）
+pip unistall XXX卸载
+导出包版本：conda list -e > requirements.txt
+查询可以安装的cudatoolkit版本：conda search cudatoolkit --info
+3090显卡对应得cuda版本>11.0 eg：conda install cudatoolkit==11.0.221
+远程后台运行：screen/Tmax
+github下载项目：git clone
+python/C++：VScode  远程连接：https://blog.csdn.net/gls_nuaa/article/details/125639849?spm=1001.2014.3001.5506
+
+安装7zz(用于解压iso文件）：
+下载7zz：wget https://www.7-zip.org/a/7z2201-linux-x64.tar.xz
+新建文件夹7z，将压缩包放入7z中，然后cd 7zz         解压：tar xvJf 7z2201-linux-x64.tar.xz
+解压iso：./7z/7zz x ../MATLAB2018/R2018a_glnxa64_dvd1.iso -o../MATLAB2018/matlab/
