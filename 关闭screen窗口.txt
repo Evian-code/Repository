@@ -1,0 +1,11 @@
+screen废弃的窗口太多了，如何一次性的都关闭所有的screen窗口
+一、看一下现在到底有多少个screen窗口开着
+
+screen -ls |awk '/Socket/'|awk '{print $1}'
+
+二、如果有29个，那就关闭29个
+
+screen -ls|awk 'NR>=1&&NR<=29{print $1}'|awk '{print "screen -S "$1" -X quit"}'|sh
+
+
+单个删除：screen -S name -X quit: 这个命令可以删除这个子会话

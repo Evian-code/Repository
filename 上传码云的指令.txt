@@ -1,0 +1,11 @@
+1.输入命令：git init ，此命令创建了一个git 本地仓库，可以看到文件夹中出现.git文件（要打开隐藏文件）；
+
+2.输入命令：git remote add origin 码云仓库地址（地址去上面创建的码云仓库复制即可）；
+
+3.输入命令：git pull origin master，这步的作用是：将码云上的仓库pull到本地你的项目中；
+
+4.输入命令：git add . （注意add和.之间的空格），这步将文件放入缓存区；查看状态 git status，确保添加暂存区成功。
+
+5.输入命令：git commit -m “描述” ，这步是给刚刚的操作取别名；
+
+6.输入命令：git push origin master ，将本地文件push到前面的码云仓库
